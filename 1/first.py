@@ -53,6 +53,8 @@ def part_two():
     print(sum(biggest_3))
     pass
 
+
+# main
 with open('./1/input.txt') as f:
         calories = f.readlines()
 
