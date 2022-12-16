@@ -26,9 +26,21 @@ def part_one():
     # parse all of the movments and update the stacks
     for i in range(len(steps)):
         repetitions, from_stack, to_stack = [int(s) for s in steps[i].split() if s.isdigit()]
-        for i in range(repetitions):
+        
+        # part one 
+        # for j in range(repetitions):
+        #     aux = stacks[from_stack].pop()
+        #     stacks[to_stack].append(aux)
+
+        # part two (probably easier with slicing in python but I am a .NET dev ^^ )
+        aux_stack = []
+        for j in range(repetitions):
             aux = stacks[from_stack].pop()
-            stacks[to_stack].append(aux)
+            aux_stack.append(aux)
+
+        for j in range(repetitions):
+            aux = aux_stack.pop()
+            stacks[to_stack].append(aux)    
 
     print(stacks)
     # get the tops from all of the stacks
