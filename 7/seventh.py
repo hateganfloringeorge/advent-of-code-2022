@@ -86,6 +86,18 @@ def part_one():
     
     print(total_sum)
 
+    # part two
+    unused_memory = 70000000 - dir_entries[0].size
+    memory_required = 30000000 - unused_memory
+    plausible_files = []
+
+    for i in range(len(dir_entries)):
+        if dir_entries[i].size >= memory_required:
+            plausible_files.append(dir_entries[i].size)
+
+    
+    print(min(plausible_files))
+
 
 # main
 with open('./7/input.txt') as f:
