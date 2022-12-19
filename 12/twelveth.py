@@ -32,23 +32,11 @@ def checkMovement(old_x, old_y, new_x, new_y):
 rowNum = [-1, 0, 0, 1]
 colNum = [0, -1, 1, 0]
 
-def part_one():
-    start_x = 0
-    start_y = 0
-    distance = 0
-    for i in range(H):
-        for j in range(W):
-            if (maze[i][j] == 'S'):
-                start_x = i
-                start_y = j
-                break
-    
+def BSF(start_x: int, start_y: int):
     visited = [[False for i in range(W)]
                         for j in range(H)]
     
     visited[start_x][start_y] = True
-
-    counter = 0
     
     q = deque()
     s = QueueNode(start_x, start_y, 0)
@@ -60,8 +48,7 @@ def part_one():
 
         # check if reached finish
         if maze[node.x][node.y] == 'E':
-            distance = node.dist
-            break
+            return node.dist
         
         for i in range(4):
             row = node.x + rowNum[i]
@@ -69,14 +56,33 @@ def part_one():
 
             if (isValid(row, col) and not visited[row][col]
                 and checkMovement(node.x, node.y, row, col)):
-                counter += 1
                 
                 visited[row][col] = True
                 q.append(QueueNode(row, col, node.dist + 1))
+    return 351
 
 
-    print(counter)
+def part_one():
+    start_x = 0
+    start_y = 0
+    distance = 0
+    for i in range(H):
+        for j in range(W):
+            if (maze[i][j] == 'S'):
+                start_x = i
+                start_y = j
+                break
+    distance = BSF(start_x, start_y)
     print(distance)
+
+def part_two():
+    values = []
+    for i in range(H):
+        for j in range(W):
+            if maze[i][j] == 'a':
+                values.append(BSF(i,j))
+    
+    print(min(values))
 
 # main
 with open('./12/input.txt') as f:
@@ -86,4 +92,6 @@ maze = [s.strip() for s in maze]
 
 H = len(maze)
 W = len(maze[0])
-part_one()
+
+#part_one()
+part_two()
