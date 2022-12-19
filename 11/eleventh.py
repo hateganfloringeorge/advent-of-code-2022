@@ -56,7 +56,15 @@ def part_one():
         i += 1
 
     # compute result
-    rounds_count = 20
+    
+    #rounds_count = 20
+    rounds_count = 10000
+    common_multiple = 1
+    for i in range(len(monkeys)):
+        if monkeys[i].div_by != "":
+            common_multiple *= monkeys[i].div_by
+    print(common_multiple)
+
     inspections = [0] * len(monkeys)
 
     for i in range(rounds_count):
@@ -81,7 +89,10 @@ def part_one():
                     item += op_number
 
                 # divide by 3
-                item //= 3
+                #item //= 3
+
+                if item > common_multiple and item % common_multiple != 0:
+                    item = item % common_multiple
 
                 # check division
                 div_result = (item % monkey.div_by) == 0
@@ -97,7 +108,7 @@ def part_one():
     first_max = max(inspections)
     inspections.remove(first_max)
     second_max = max(inspections)
-    #print(str(first_max) + " " + str(second_max))
+    print(str(first_max) + " " + str(second_max))
     print(first_max * second_max)
 
 # main
