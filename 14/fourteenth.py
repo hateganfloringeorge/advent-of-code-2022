@@ -56,6 +56,14 @@ def part_one():
                 row = new_row
                 col = new_col
 
+    # part two specific
+    floor_lvl = max(last_ground) + 2
+
+    for i in range(len(last_ground)):
+        occupied[floor_lvl][i] = True
+        last_ground[i] = floor_lvl
+
+
     # start pouring the sand
     total_sand = 0
     keepCounting = True
@@ -66,11 +74,15 @@ def part_one():
         sand_row = 0
         sand_col = 500
 
+        if not keepMoving(sand_row, sand_col):
+            total_sand += 1
+            break
+
         while keepMoving(sand_row, sand_col):
 
-            if sand_row > last_ground[sand_col]:
-                keepCounting = False
-                break
+            # if sand_row > last_ground[sand_col]:
+            #     keepCounting = False
+            #     break
 
             # go down
             while not occupied[sand_row + 1][sand_col]:
@@ -84,18 +96,13 @@ def part_one():
                 sand_row += 1
                 sand_col += 1
         
-        if keepCounting:
-            occupied[sand_row][sand_col] = True
-            total_sand += 1
+        # if keepCounting:
+        #     occupied[sand_row][sand_col] = True
+        #     total_sand += 1
+        occupied[sand_row][sand_col] = True
+        total_sand += 1
     
     print(total_sand)
-            
-            
-
-        
-    print(last_ground)
-        
-    
     
 
 # main
@@ -104,6 +111,7 @@ with open('./14/input.txt') as f:
 
 obstacles = [s.strip() for s in obstacles]
 big_number = 1000
+last_ground = []
 last_ground = [-1] * big_number
 
 occupied = [[False for i in range(big_number)]
