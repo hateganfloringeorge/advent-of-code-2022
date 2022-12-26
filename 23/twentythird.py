@@ -171,12 +171,40 @@ def part_one():
 
 
 def part_two():
-    total = 0
-    for i in range(H):
-        for j in range(W):
-            if maze[i][j] == '.':
-                total += 1
-    print(total)
+    global look_index
+    #print_maze()
+    for i in range(len(initial_maze)):
+        for j in range(len(initial_maze[0])):
+            if initial_maze[i][j] == '#':
+                elves.append(Elf(i +  H //2, j + W//2))
+                maze[i +  H //2][j + W//2] = '#'
+            else:
+                maze[i][j] = '.'
+
+    round = 1
+    while True:
+        for x in elves:
+            if not x.check_alone():
+                x.add_proposal()
+        
+        if len(proposals) == 0:
+            print(round)
+            break
+        
+        for (to_i, to_j), pos_list in proposals.items():
+            if len(pos_list) == 1:
+                (from_i, from_j) = pos_list[0]
+                for elf in elves:
+                    if elf.i == from_i and elf.j == from_j:
+                        elf.change_index(to_i, to_j)
+                        maze[from_i][from_j] = '.'
+                        maze[to_i][to_j] = '#'
+                        break
+        proposals.clear()
+        look_index += 1
+        round += 1
+    
+    print(round)
 
 # main
 with open('./23/input.txt') as f:
@@ -197,5 +225,5 @@ look_index = 0
 proposals = {}
 elves = []
 
-part_one()
-#part_two()
+#part_one()
+part_two()
