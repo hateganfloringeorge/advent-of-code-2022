@@ -48,15 +48,42 @@ def part_one():
     
     total_sum = 0
     for i in range(0, len(pairs), 3):
-        print(i)
+        #print(i)
         left = ast.literal_eval(pairs[i])
         right = ast.literal_eval(pairs[i+1])
         if is_correct_order(left, right) != -1:
             total_sum += i // 3 + 1
-        print(is_correct_order(left, right))
+        #print(is_correct_order(left, right))
 
     print(total_sum)
 
+def part_two():
+    key_1 = [[2]]
+    key_2 = [[6]]
+    elements = [key_1, key_2]
+    for i in range(0, len(pairs), 3):
+        left = ast.literal_eval(pairs[i])
+        right = ast.literal_eval(pairs[i+1])
+        elements.append(left)
+        elements.append(right)
+    
+    print(len(elements))
+
+    # when in doubt, just bubble sort
+    for i in range(len(elements) - 1):
+        for j in range(i + 1, len(elements)):
+            if is_correct_order(elements[i], elements[j]) == -1:
+                aux = elements[j]
+                elements[j] = elements[i]
+                elements[i] = aux
+
+    result = 1
+    for i in range(len(elements)):
+        if elements[i] == key_1 or elements[i] == key_2:
+            result *= (i + 1)
+    
+    print(result)
+    
 
 # main
 with open('./13/input.txt') as f:
@@ -65,4 +92,5 @@ with open('./13/input.txt') as f:
 pairs = [s.strip() for s in pairs]
 right_order_pairs = [False for j in range((len(pairs) + 1)//3)]
 
-part_one()
+#part_one()
+part_two()
