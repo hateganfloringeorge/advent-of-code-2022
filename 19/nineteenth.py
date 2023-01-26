@@ -36,15 +36,18 @@ def part_one():
 
     # compute max obsidian for blueprint
 
-    final_result = 0
-    for k in range(len(blueprints)):
-        
+    # final_result = 0
+    # for k in range(len(blueprints)):
+    final_result = 1
+    for k in range(3):
+
         blueprint = blueprints[k]
 
         max_ore = max(blueprint[0], blueprint[1], blueprint[2], blueprint[4])
         max_clay = blueprint[3]
 
-        intitial_situation = Situation(24, [1, 0, 0, 0], [0, 0, 0, 0])
+        # intitial_situation = Situation(24, [1, 0, 0, 0], [0, 0, 0, 0])
+        intitial_situation = Situation(32, [1, 0, 0, 0], [0, 0, 0, 0])
         q = deque()
         q.append(intitial_situation)
         
@@ -110,8 +113,9 @@ def part_one():
                                     q.append(Situation(situation.minutes_left, new_robots, new_ores))
         
         print("For {} we found {} ", k+1, max_geode)
-        final_result += (k + 1) * max_geode 
-
+        # final_result += (k + 1) * max_geode 
+        final_result *= max_geode
+        
     print(final_result)
 
 
