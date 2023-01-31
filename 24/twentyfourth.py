@@ -65,15 +65,17 @@ def move_blizzards():
     aux.clear()
 
 
-def compute_possible_positions():
+def compute_possible_positions(finish):
     global drawing, positions, directions
     next_positions = set()
     for (row, col) in positions:
         for (offset_row, offset_col) in directions:
-            if drawing[row + offset_row][col + offset_col] == '.':
-                next_positions.add((row + offset_row, col + offset_col))
-            elif drawing[row + offset_row][col + offset_col] == 'F':
-                return True
+            if drawing[row + offset_row][col + offset_col] in ['.', 'F', 'S']:
+                if drawing[row + offset_row][col + offset_col] == finish:
+                    return True
+                else:
+                    next_positions.add((row + offset_row, col + offset_col))
+            
     
     positions = next_positions
     return False
@@ -100,21 +102,38 @@ def part_one():
                     going_up.append((i,j))
                 elif drawing[i][j] == 'v':
                     going_down.append((i,j))
-                
-    clear_map(True)
-    drawing[len(drawing) - 2][len(drawing[0]) - 2] = "F"
-    empty_drawing = copy.deepcopy(drawing)
-    start_row = 2
+
+    start_row = 1
     start_col = 1
+    finish_row = len(drawing) - 2
+    finish_col = len(drawing[0]) - 2
+    clear_map(True)
+    drawing[finish_row][finish_col] = "F"
+    drawing[start_row][start_col] = "S"
+    #print_nicely(drawing)
+    empty_drawing = copy.deepcopy(drawing)
+
 
     positions.add((start_row, start_col))
     steps = 0
-    while True:
-        steps += 1
-        move_blizzards()
-        #print_nicely(drawing)
-        if compute_possible_positions():
-            break
+    for i in range(3):
+        looking_for = ''
+        if i % 2 == 0:
+            positions = {(start_row, start_col)}
+            looking_for = 'F'
+        else:
+            positions = {(finish_row, finish_col)}
+            looking_for = 'S'
+
+
+        while True:
+            steps += 1
+            move_blizzards()
+            #print_nicely(drawing)
+            if compute_possible_positions(looking_for):
+                break
+            clear_map()
+        print(steps)
         clear_map()
 
     print(steps)
